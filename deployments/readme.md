@@ -2,7 +2,12 @@
 
 Access kafka-ui in `http://localhost:8080` and create a `fruits` topic with 10 partitions.  
 
-Install the producer deployment.
+Install metrics server, used by Producer Horizontal Pod Autoscaler 
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+Install the producer deployment, create a Pod and the HPA.
 
 ```
 kubectl apply -f deploy-producer.yaml
@@ -27,7 +32,7 @@ xargs -I % -P 20 curl -X GET "localhost:8081/process/10" < <(printf '%s\n' {1..4
 kubectl apply -f deploy-consumer.yaml
 ```
 
-Start the Keda object to scale de consumer-deployment, one HPA will be created to take care of scale based on consumer-group lag 
+Start the Keda object to scale de consumer-deployment, one HPA will be created automaticaly to take care of scale based on consumer-group lag 
 
 ```yaml
 apiVersion: keda.sh/v1alpha1

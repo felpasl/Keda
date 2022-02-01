@@ -15,3 +15,17 @@ It's a .net core application that from a get http method {host}/process/{count},
 ## Consumer
 
 is a quarkus application that consumes from the {fruits} queue, performs a role and returns it to another {fruits-buy} queue.
+
+# Images
+Under Load:
+![UnderLoad](images/underLoad.jpg)
+
+Cooldown:
+![Colldown](images/cooldown.jpg)
+
+After or Waiting Load:
+![After/Waiting Load](images/afterLoad.jpg)
+
+# ToDo
+
+Add Monitoring ans get graphs
