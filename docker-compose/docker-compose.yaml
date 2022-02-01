@@ -1,0 +1,62 @@
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:0.3.2
+    container_name: kafka-ui
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_READONLY=true
+
+  producer:
+    build:
+      context: ../fruit-producer/.
+    image: ghcr.io/felpasl/fruit-producer:latest
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8081:80"
+    environment:
+      - BoostrapServer=kafka:9092
+
+  consumer:
+    build:
+      context: ../fruit-consumer/.
+      dockerfile: ../fruit-consumer/src/main/docker/Dockerfile.jvm
+    image: ghcr.io/felpasl/fruit-consumer:latest
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      - kafka.bootstrap.servers=kafka:9092
+      - mp.messaging.incoming.fruit.auto.offset.reset=latest

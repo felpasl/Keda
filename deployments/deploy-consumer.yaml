@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-deployment
+  labels:
+    app: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - name: consumer
+        image: ghcr.io/felpasl/fruit-consumer:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+          - name: kafka.bootstrap.servers
+            value: kafka.kafka:9092
+            
+          - name: mp.messaging.incoming.fruit.auto.offset.reset
+            value: latest
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200M
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: consumer-fruit-kafka-scaledobject
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: consumer-deployment
+  cooldownPeriod: 60
+  pollingInterval: 20
+  maxReplicaCount: 10
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: kafka.kafka:9092
+      consumerGroup: fruit-processing       # Make sure that this consumer group name is the same one as the one that is consuming topics
+      topic: fruits
+      # Optional
+      lagThreshold: "100"
+      offsetResetPolicy: latest
+      allowIdleConsumers: 'false'
