@@ -26,6 +26,11 @@ Cooldown:
 After or Waiting Load:
 ![After/Waiting Load](images/afterLoad.jpg)
 
+# Requirements
+- An Kubernetes Instance ans knowledge
+- Helm installed on machine
+- Kafka Basics knowledge
+
 # ToDo
 
 Add Monitoring and get graphs
