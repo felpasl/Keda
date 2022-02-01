@@ -17,12 +17,12 @@ Open a service port with port-forward
 ```
 kubectl port-forward service/producer-service 8081:80
 ```
-Generate load on producer. 
+Generate load on the producer. 
 
 ```
 xargs -I % -P 20 curl -X GET "localhost:8081/process/10" < <(printf '%s\n' {1..4000})
 ``` 
-- pralalelism degree: `-P 20` 
+- pralallelism degree: `-P 20` 
 - quantity per request: 10 `localhost:8081/process/10`
 - quantity of calls: `{1..4000}`
 - to stop load `ctrl+c`

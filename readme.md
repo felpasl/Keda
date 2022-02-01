@@ -6,7 +6,7 @@ Some previous steps must be performed
 
 1. [Kafka Install](kafka/install.md)
 2. [Keda.sh Install](keda/install.md)
-3. [Producer and Cosumer deploy](deployments/readme.md)
+3. [Producer and Consumer deploy](deployments/readme.md)
 
 ## Producer
 
@@ -28,4 +28,4 @@ After or Waiting Load:
 
 # ToDo
 
-Add Monitoring ans get graphs
+Add Monitoring and get graphs
