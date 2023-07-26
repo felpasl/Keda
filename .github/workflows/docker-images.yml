@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v
+    
+    - name: Build and Publish fruit-producer Docker image
+      uses: VaultVulp/gp-docker-action@1.1.12
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
+          image-name: fruit-producer # Provide only Docker image name, tag will be automatically set to latest
+          build-context: ./fruit-producer
+          
+    - name: Build and Publish fruit-consumer latest Docker image
+      uses: VaultVulp/gp-docker-action@1.1.12
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
+          image-name: fruit-producer # Provide only Docker image name, tag will be automatically set to latest
+          build-context: ./fruit-consumer
+          
