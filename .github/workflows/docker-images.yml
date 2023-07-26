@@ -14,18 +14,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and Publish fruit-producer Docker image
-      uses: TCPShield/gp-docker-action@1.1.13
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
       with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-          image-name: fruit-producer # Provide only Docker image name, tag will be automatically set to latest
-          build-context: ./fruit-producer
-          
-    - name: Build and Publish fruit-consumer latest Docker image
-      uses: TCPShield/gp-docker-action@1.1.13
-      with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-          image-name: fruit-producer # Provide only Docker image name, tag will be automatically set to latest
-          build-context: ./fruit-consumer
-          
+        context: ./fruit-producer
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: |
+          ${{ github.repository_owner }}/fruit-producer:latest
+          ${{ github.repository_owner }}/fruit-producer:${{github.run_number}}
+          ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
+          ghcr.io/${{ github.repository_owner }}/fruit-producer:${{github.run_number}}
