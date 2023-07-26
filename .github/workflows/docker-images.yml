@@ -27,7 +27,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-producer
-        platforms: linux/amd64,linux/arm64
+        platforms: linux/amd64
         push: true
         tags: |
           ${{ github.repository_owner }}/fruit-producer:latest
