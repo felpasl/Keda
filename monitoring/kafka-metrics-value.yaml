@@ -1,0 +1,11 @@
+metrics:
+  kafka:
+    enabled: false
+  jmx:
+    enabled: true
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
+zookeeper:
+  metrics:
+    enabled: false

@@ -28,7 +28,5 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.repository_owner }}/fruit-producer:latest
-          ${{ github.repository_owner }}/fruit-producer:${{github.run_number}}
           ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{github.run_number}}
