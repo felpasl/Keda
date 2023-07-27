@@ -30,3 +30,14 @@ jobs:
         tags: |
           ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{github.run_number}}
+
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: ./fruit-consumer
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer:latest
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer:${{github.run_number}}
