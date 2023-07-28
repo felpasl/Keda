@@ -1,0 +1,27 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: build mvn
+      run: |
+        cd fruit-consumer
+        mvn package
+    - name: build docker image
+      run: |
+        cd fruit-consumer
+        docker build -t fruit-consumer -f ./src/main/docker/Dockerfile.jvm .
+    - name: build docker image
+      run: |
+        cd fruit-producer
+        docker build -t fruit-producer .

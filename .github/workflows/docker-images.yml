@@ -34,7 +34,7 @@ jobs:
     - name: build mvnm
       run: |
         cd fruit-consumer
-        mvnw package
+        mvn package
     -
       name: Build and push
       uses: docker/build-push-action@v4
