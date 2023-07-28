@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   release:
-    types: [published, created]
+    types: [published, prereleased]
 
 jobs:
 
@@ -33,7 +33,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.event.release.draft == false && 'ghcr.io/${{ github.repository_owner }}/fruit-producer:latest' }}
+          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-producer:latest' }}
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
 
     - name: build mvnm
@@ -50,5 +50,5 @@ jobs:
         push: true
         tags: |
           ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:${{ github.event.release.tag_name }}
-          ${{ github.event.release.draft == false && 'ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest' }}
+          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest' }}
 
