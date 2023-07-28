@@ -38,7 +38,7 @@ jobs:
 
     - name: build mvnm
       run: |
-        cd fruit-consumer
+        cd fruit-consumer-java
         mvn package
     -
       name: Build and push
