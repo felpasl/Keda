@@ -33,8 +33,8 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-producer:latest' }}
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
+          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-producer:latest' }}
 
     - name: build mvnm
       run: |
