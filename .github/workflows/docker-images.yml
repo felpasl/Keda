@@ -31,11 +31,16 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
 
+    - name: build mvnm
+      run: |
+        cd fruit-consumer
+        mvnw package
     -
       name: Build and push
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-consumer
+        dockerfile: ./src/main/docker/Dockerfile.jvm
         platforms: linux/amd64
         push: true
         tags: |
