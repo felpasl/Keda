@@ -45,7 +45,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-consumer
-        file: ./src/main/docker/Dockerfile.jvm 
+        file: ./fruit-consumer/src/main/docker/Dockerfile.jvm 
         platforms: linux/amd64
         push: true
         tags: |
