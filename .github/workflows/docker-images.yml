@@ -1,8 +1,10 @@
+
 name: Docker Image CI
 
 on:
-  release:
-    types: [released, prereleased]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
 
@@ -11,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
@@ -33,12 +35,18 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ${{ if(github.event.release.prerelease == false) }} 
-                    ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
-          ${{ else }} 
-                    ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
-                    ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
-          ${{ endif }}
+          ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: ./fruit-consumer-azurefunction
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-azurefunction:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-azurefunction:latest
 
     - name: build mvnm
       run: |
