@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: consumer-deployment
+  name: consumer-java-deployment
   labels:
-    app: consumer
+    app: consumer-java
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: consumer
+      app: consumer-java
   template:
     metadata:
       labels:
-        app: consumer
+        app: consumer-java
     spec:
       containers:
-      - name: consumer
+      - name: consumer-java
         image: ghcr.io/felpasl/fruit-consumer-java:latest
         imagePullPolicy: Always
         ports:
@@ -34,11 +34,11 @@ spec:
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: consumer-fruit-kafka-scaledobject
+  name: consumer-java-fruit-kafka-scaledobject
   namespace: default
 spec:
   scaleTargetRef:
-    name: consumer-deployment
+    name: consumer-java-deployment
   cooldownPeriod: 60
   pollingInterval: 20
   maxReplicaCount: 10
@@ -46,7 +46,7 @@ spec:
   - type: kafka
     metadata:
       bootstrapServers: kafka.kafka:9092
-      consumerGroup: fruit-processing       # Make sure that this consumer group name is the same one as the one that is consuming topics
+      consumerGroup: fruit-java-processing       # Make sure that this consumer group name is the same one as the one that is consuming topics
       topic: fruits
       # Optional
       lagThreshold: "100"
