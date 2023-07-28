@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   release:
-    types: [published]
+    types: [published, created]
 
 jobs:
 
@@ -33,7 +33,7 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
+          ${{ github.event.release.draft == false && 'ghcr.io/${{ github.repository_owner }}/fruit-producer:latest' }}
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
 
     - name: build mvnm
@@ -44,10 +44,11 @@ jobs:
       name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: ./fruit-consumer
-        file: ./fruit-consumer/src/main/docker/Dockerfile.jvm 
+        context: ./fruit-consumer-java
+        file: ./fruit-consumer-java/src/main/docker/Dockerfile.jvm 
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/fruit-consumer:latest
-          ghcr.io/${{ github.repository_owner }}/fruit-consumer:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:${{ github.event.release.tag_name }}
+          ${{ github.event.release.draft == false && 'ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest' }}
+

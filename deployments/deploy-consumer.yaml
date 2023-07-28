@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: consumer
-        image: ghcr.io/felpasl/fruit-consumer:latest
+        image: ghcr.io/felpasl/fruit-consumer-java:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

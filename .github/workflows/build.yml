@@ -20,12 +20,12 @@ jobs:
     
     - name: build mvn
       run: |
-        cd fruit-consumer
+        cd fruit-consumer-java
         mvn package
     - name: build docker image
       run: |
-        cd fruit-consumer
-        docker build -t fruit-consumer -f ./src/main/docker/Dockerfile.jvm .
+        cd fruit-consumer-java
+        docker build -t fruit-consumer-java -f ./src/main/docker/Dockerfile.jvm .
     - name: build docker image
       run: |
         cd fruit-producer
