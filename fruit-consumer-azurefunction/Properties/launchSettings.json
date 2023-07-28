@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Fruit.Consumer.AzureFunction": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7007"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 30465,
+      "useSSL": false
+    }
+  }
+}

@@ -1,3 +1,8 @@
 {
-    "dotnet.defaultSolution": "fruit-producer/fruit-producer.sln"
+    "dotnet.defaultSolution": "fruit-producer.sln",
+    "azureFunctions.deploySubpath": "fruit-consumer-azurefunction/bin/Release/net6.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)"
 }

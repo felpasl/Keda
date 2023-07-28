@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main , dev]
 
 jobs:
 
@@ -18,15 +18,21 @@ jobs:
         java-version: '17'
         cache: 'maven'
     
-    - name: build mvn
+    - name: build mvn fruit-consumer-java
       run: |
-        cd fruit-consumer
+        cd fruit-consumer-java
         mvn package
-    - name: build docker image
+    - name: build docker image fruit-consumer-java
       run: |
-        cd fruit-consumer
-        docker build -t fruit-consumer -f ./src/main/docker/Dockerfile.jvm .
-    - name: build docker image
+        cd fruit-consumer-java
+        docker build -t fruit-consumer-java -f ./src/main/docker/Dockerfile.jvm .
+
+    - name: build docker image fruit-consumer-azurefunction
+      run: |
+        cd fruit-consumer-azurefunction
+        docker build -t fruit-consumer-azurefunction .
+
+    - name: build docker image fruit-producer
       run: |
         cd fruit-producer
         docker build -t fruit-producer .

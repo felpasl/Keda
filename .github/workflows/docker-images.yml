@@ -1,8 +1,10 @@
+
 name: Docker Image CI
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*'
 
 jobs:
 
@@ -11,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
@@ -33,21 +35,32 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: ./fruit-consumer-azurefunction
+        platforms: linux/amd64
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-azurefunction:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-azurefunction:latest
 
     - name: build mvnm
       run: |
-        cd fruit-consumer
+        cd fruit-consumer-java
         mvn package
     -
       name: Build and push
       uses: docker/build-push-action@v4
       with:
-        context: ./fruit-consumer
-        file: ./fruit-consumer/src/main/docker/Dockerfile.jvm 
+        context: ./fruit-consumer-java
+        file: ./fruit-consumer-java/src/main/docker/Dockerfile.jvm 
         platforms: linux/amd64
         push: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/fruit-consumer:latest
-          ghcr.io/${{ github.repository_owner }}/fruit-consumer:${{ github.event.release.tag_name }}
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:${{ github.event.release.tag_name }}
+          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest' }}
+

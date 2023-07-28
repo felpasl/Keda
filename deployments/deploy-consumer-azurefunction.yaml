@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: consumer-deployment
+  name: consumer-azurefunction-deployment
   labels:
-    app: consumer
+    app: consumer-azurefunction
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: consumer
+      app: consumer-azurefunction
   template:
     metadata:
       labels:
-        app: consumer
+        app: consumer-azurefunction
     spec:
       containers:
-      - name: consumer
-        image: ghcr.io/felpasl/fruit-consumer:latest
+      - name: consumer-azurefunction
+        image: ghcr.io/felpasl/fruit-consumer-azurefunction:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -46,7 +46,7 @@ spec:
   - type: kafka
     metadata:
       bootstrapServers: kafka.kafka:9092
-      consumerGroup: fruit-processing       # Make sure that this consumer group name is the same one as the one that is consuming topics
+      consumerGroup: consumer-azurefunction-processing       # Make sure that this consumer group name is the same one as the one that is consuming topics
       topic: fruits
       # Optional
       lagThreshold: "100"
