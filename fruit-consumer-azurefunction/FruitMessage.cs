@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Fruit.Consumer.AzureFunction
 {
 
-    public class FruitMessage : ISerializer<FruitMessage>
+    public class FruitMessage : ISerializer<FruitMessage>, IDeserializer<FruitMessage>
     {
         public DateTime? now { get; set; }
         public Fruit? fruit { get; set; }
@@ -40,6 +40,11 @@ namespace Fruit.Consumer.AzureFunction
 
                 return ms.ToArray();
             }
+        }
+
+        public FruitMessage Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
+        {
+            return JsonConvert.DeserializeObject<FruitMessage>(Encoding.UTF8.GetString(data));
         }
     }
     public class LowercaseContractResolver : DefaultContractResolver
