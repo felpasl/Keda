@@ -14,7 +14,7 @@ namespace Fruit.Consumer.AzureFunction
         // "KafkaPassword":"{EVENT_HUBS_CONNECTION_STRING}
         [FunctionName("Function1")]
         public void Run(
-            [KafkaTrigger("$BrokerList",
+            [KafkaTrigger("%BrokerList%",
                           "fruits",
                           ConsumerGroup = "consumer-azurefunction-processing")] KafkaEventData<FruitMessage> message,
             [Kafka("$Brokers",
