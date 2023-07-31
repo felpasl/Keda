@@ -21,7 +21,7 @@ spec:
         ports:
         - containerPort: 80
         env:
-          - name: APPSETTING_BrokerList
+          - name: BrokerList
             value: kafka.kafka:9092
         resources:
           limits:
