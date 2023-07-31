@@ -27,7 +27,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     -
-      name: Build and push
+      name: Build and push producer
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-producer
@@ -37,7 +37,7 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/fruit-producer:${{ github.event.release.tag_name }}
           ghcr.io/${{ github.repository_owner }}/fruit-producer:latest
     -
-      name: Build and push
+      name: Build and push azurefunction
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-consumer-azurefunction
@@ -52,7 +52,7 @@ jobs:
         cd fruit-consumer-java
         mvn package
     -
-      name: Build and push
+      name: Build and push java
       uses: docker/build-push-action@v4
       with:
         context: ./fruit-consumer-java
@@ -61,5 +61,5 @@ jobs:
         push: true
         tags: |
           ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:${{ github.event.release.tag_name }}
-          ${{ github.event.release.prerelease == false && 'ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest' }}
+          ghcr.io/${{ github.repository_owner }}/fruit-consumer-java:latest
 
