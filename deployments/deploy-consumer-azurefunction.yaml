@@ -21,11 +21,8 @@ spec:
         ports:
         - containerPort: 80
         env:
-          - name: kafka.bootstrap.servers
+          - name: APPSETTING_BrokerList
             value: kafka.kafka:9092
-            
-          - name: mp.messaging.incoming.fruit.auto.offset.reset
-            value: latest
         resources:
           limits:
             cpu: 200m
